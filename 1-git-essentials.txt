@@ -1,0 +1,59 @@
+1. Basic Git Configuration (can be made on 3 levels System/User/Project)
+	git config --global user.name "Manjit"
+	git config --global user.email "someone@nowhere.com"
+	git config --list (this fetches details from the .gitconfig file present in user's home directory)
+2. git help log (opens up the git manual page for log command)
+3. git init (creates .git directory where all tracking data is captured)
+4. git add . (add all changes in the current directory)
+5. git commit -m "Initial commit" (commit the changes and start tracking the file)
+6. View commit logs:
+	git log
+	git log -n 5 (will show the 5 most recent commits)
+	git log --since=2019-01-01
+	git log --until=2019-01-01
+	git log --author="Manjit" (don't need to specify the full name)
+	git log --grep="Init"
+	git log --oneline
+7. The three tree architecture:
+	+------------------+
+	|    repository    |
+	+------------------+
+                   |
+		   | git commit file.txt
+		   |
+	+------------------+
+	|  staging index   |
+	+------------------+
+		   |
+		   | git add file.txt
+		   |
+	+------------------+
+	|     working      |
+	+------------------+
+8. Hash Values (SHA-1 hash algo) used to label each one of the commits.
+   It also ensures data integrity. You can't change the commit message or author or parent of the commit without changing it's SHA value.
+9. HEAD - points to the tip of the current branch in repository.
+	cat .git/HEAD
+	cat .git/refs/heads/master
+10. git status
+11. git diff (shows changes by comparing the repository version with that prsent in working area)
+12. git diff --staged (compares repository version with staging area not the working area)
+13. git diff --cached (same as above)
+14. git rm file_to_delete.txt (puts the changes in staging area automatically)
+15. git mv first.txt primary.txt (puts the changes in staging area automatically)
+
+Real Project
+1. git diff --color-words
+2. git commit -am "Edits support phone number throughout website" (only includes the files that are being tracked)
+3. git show 84ee18d (shows the changes that are part of commit 84ee18d)
+   git show 84ee18d --color-words
+4. git diff 84ee18d..62fa03d47 or git diff 84ee18d..HEAD --color-words(compares two commits older..newer)
+5. git checkout -- index.html (will replace the working stage version discarding any changes made there with the one present on the repository)
+6. git reset HEAD tours/ (unstage the changes: bring the changes from staging area to working area)
+7. git commit --amend -m "Reorder recommended items for the trip" (this will put the changes currently present in staging tree with latest commit)
+8. git commit --amend -m "Reorder recommended items for outdoor trip" (if staging area is clean then this will simply modify the commit message of the latest commit)
+9. git checkout HEAD^ -- explorers.html (will bring the file version pertaining to the mentioned commit hash in working area)
+10. git revert 8863104 (reverses the changes made in the commit mentioned in command and logs a new commit)
+11. git clean -n (shows which all untracked files will be removed)
+    git clean -f (will actually remove untracked files)
+12. git rm --cached db-config.txt (used in conjuecton to .gitignore when the file has been set to be tracked but now we decide to keep it in .gitignore file)

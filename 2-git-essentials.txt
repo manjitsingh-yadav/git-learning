@@ -1,0 +1,96 @@
+1. Ancestry
+	HEAD^ (HEAD^^)
+	HEAD~1, HEAD~ (HEAD~3)
+	master^
+2. Tree listings
+	git ls-tree HEAD | HEAD^ | assets/
+3. Filter git log
+	git log -3
+	git log de453df..HEAD
+	git log explorers.html
+4. Format git log
+	git log -p
+	git log --stat
+	git log --format=short
+	git log --graph
+	git log --graph --all --oneline --decorate
+5. Create Branch
+	git branch new_feature | git checkout -b new_feature
+	git branch
+	ls -la .git/refs/heads
+	cat .git/HEAD
+	git checkout new_feature
+	git checkout -b new_branch old_branch 
+	git diff master..new_feature | git diff new_feature..shorten_title^
+	git branch --merged (lists the branches whose all commits are there in the currently checked out branch)
+	git branch --no-merged
+	git branch -m seo_title (renames currently checked out branch to seo_title)
+	git branch -d branch_to_delete (can not delete a branch that you are currenlty checked out to)
+	git branch -D branch_to_delete (to be used if there are commits that have not been merged with master)
+6. Reset - Moves HEAD pointer to a specific commit and it may also change some of the files in the staging index or working directory.
+	6.1 Soft - Just moves the HEAD pointer and does not change staging index and working directory.
+		     Why? Return to an old state and leave code changes staged. Useful for amending one or more commits.
+		     - git reset --soft <treeish>
+	6.2 Mixed - Moves the HEAD pointer and changes the staging index to match repository. This is the defualt choice if no type is mentioned.
+		     Why? Return to an old state and leave code changes in working directory. Useful for reorganizing commits.
+	6.3 Hard - Moves HEAD pointer, changes staging index to match the repo and changes the working directory to match repository.
+		     Why? Return to an old state and discard all subsequent code changes. Useful to permanently undo commits.
+7. Merge - git checkout master
+	     git merge seo_title (these 2 steps will merge branch seo_title with master)
+	     git branch --merged
+	     git diff --color-words master..text_edits mission.html
+	     git log --oneline --decorate --graph
+8. git stash save "changed mission page title" | git stash -u save (to include untracked files as well)
+   git checkout master
+   git stash list
+   git stash show stash@{0} | git stash show -p stash@{0}
+   git stash pop (will apply and delete the stash)
+   git stash apply (will apply the stash but won't delete it)
+   git stash drop stash@{0}
+   git stash clear (clears everything)
+9. Set up Remote: git remote | git remote -v 
+			git remote add origin URL
+			cat .git/config
+   			git push -u origin master
+			git remote rm origin
+10. Clone a repo: git clone repo-URL <directory-optional> (Cloning only brings down the master branch)
+11. Track remote branch: git branch -u origin/non-tracking non-tracking | git push -u origin master (post this you can straight away issue "git push" without mentioning origin and the branch name)
+				 git log --oneline -5 origin/non-tracking | git log --oneline -5 origin/master
+12. git pull (= git fetch + git merge origin/master)
+13. Checkout remote branches: git pull (this pulls all new codes and remote branches)
+					git branch non-tracking origin/non-tracking (this is to work on a branch that was pushed to remote repository by someone else and now you want to have it locally)
+						OR
+					git checkout -b non-tracking origin/non-tracking
+13. Delete remote branch: git branch -r
+				 git push origin :non-tracking | git push origin --delete non-tracking
+14. Enable collaboration: a. Private repos: Sign in to git hub -> go to repo -> settings tab -> Collaborators
+				  b. Public repos: Check Issues and Pull Requests tab first -> Fork the repo -> Complete your code -> Create Pull Request
+15. Collaboration workflow:
+	a. My Work
+	   git checkout master
+	   git fetch
+	   git merge origin/master
+	   git checkout -b feedback_form
+	   git add feedback.html
+	   git commit -m "Adds customer feedback form"
+	   git fetch
+	   git push -u origin feedback_form
+	b. Lynda's work
+	   git checkout master
+	   git fetch
+	   git merge origin/master
+	   git checkout -b feedback_form origin/feedback_form
+	   git log
+	   git show HEAD
+	   git commit -am "Adds tour selector to feedback form"
+	   git fetch
+	   git push
+	c. My Work
+	   git fetch
+	   git log -p feedback_form..origin/feedback_form
+	   git merge origin/feedback_form
+	   git checkout master
+	   git fetch
+	   git merge origin/master
+	   git merge feedback_form
+	   git push
