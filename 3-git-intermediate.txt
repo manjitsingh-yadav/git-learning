@@ -55,3 +55,12 @@
 						  (moving it to the master branch, capming is the point where the branch we are rebasing diverged from i.e. expenses
 						   expenses was checkedout from camping, camping was checkedout from master now we are rebasing expenses to the master through this command)
 12. Undo a rebase: git reset --hard ORIG_HEAD or git rebase --onto 9291f0c88 master new_feature
+13. Log options: git log -p | git log --patch
+		 git log -L 1,5:file.txt
+14. git blame filename.txt
+    git blame -L 100,150 filename.txt
+    git blame -L 100,+5 filename.txt
+    git annotate filename.txt
+15. Bisect: git bisect start
+	    git bisect bad (telling that the current version is bad)
+            git bisect good
