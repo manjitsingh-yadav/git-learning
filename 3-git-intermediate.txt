@@ -1,0 +1,57 @@
+1. Branch management: git push --force (force push to remote)
+			    git fetch
+			       +
+			    git reset --hard origin/master (needs to be run by each of the collaborators post a forced push)
+2. Identify Merged Branches: Branches whose tips are reachable from the specified commit (HEAD if not specified)
+				     git branch --merged
+				     git branch --no-merged
+				     git branch -r --no-merged | --merged
+				     git branch --merged HEAD | july_release | origin/july_release | b325a7c49
+3. Delete local and remote branches: git branch -d new_feature (this will work if all the commits of new_feature have been merged with main branch)
+						 git branch -D new_feature (this option is used when you want to delete the branch knowing that not all the commits have been merged with main branch)
+						 git push origin :new_feature
+						 git push --delete origin new_feature
+						 git push -d origin new_feature
+4. Prune stale branches: git fetch + git remote prune origin (--dry-run)
+						OR
+				 git fetch --prune | -p (fetch and prune at the same time)
+						OR
+				 git config --global fetch.prune true (now it will always prune before fetching)
+5. Tags: Are named reference to a commit. Most often used to mark releases (v1.0, v1.1)
+	   git tag issue136 4rdf564e (lightweight)
+	   git tag -am "Start" v0.0 d55bc490 (annotated)
+	
+	   git tag | git tag --list | git tag -l | git tag -ln
+	   git tag -l "v2*"
+	
+	   git show v1.1
+	   git diff v1.0..v1.1
+
+	   git tag --delete v1.1 | -d v1.1
+
+	   git push does not transfer tags to remote. They must be explicitly transfered. git fetch automatically retrives shared tags.
+	   git push origin v1.1 (pushes a single tag)
+   	   git push origin --tags (pushes all tags to remote)
+	   git fetch (fetches both commits and tags)
+	   git fetch --tags (only fetches tags)
+
+	   git push origin :v1.0
+6. Interactive staging: git add --interactive | -i
+7. Cherry picking: Conceptually similar to copy-paste
+			 Apply changes from one or more existing commits
+			 Each existing commit is recorded as a new commit on the current branch
+			 Can result in conflicts which must be resolved
+	   git cherry-pick d9148fr5 | git cherry-pick d9148fr5..5rf786yu
+	   (use --edit, -e to edit the commit message)
+	   git cherry-pick --continue
+8. Create diff patches: git diff 85rtyg67 98iujk6u7 > for_review.diff
+9. Apply diff patches: git checkout -b tester 85327e7a
+			     git apply for_review.diff
+10. Rebasing: Shifts commits in the current branch down to the tip of another commit of another branch
+			     git rebase master (here current branch will get rebased to tip of master branch)
+			     git rebase master new_feature (rebase new_feature to tip of master, if not checked out to the new_feature branch)
+			     git merge-base master new_feature (return commit where topic branch diverges, here the commit on master branch from where topic branch diverges)
+11. Rebasing onto the other branches: git rebase --onto master camping expenses
+						  (moving it to the master branch, capming is the point where the branch we are rebasing diverged from i.e. expenses
+						   expenses was checkedout from camping, camping was checkedout from master now we are rebasing expenses to the master through this command)
+12. Undo a rebase: git reset --hard ORIG_HEAD or git rebase --onto 9291f0c88 master new_feature
